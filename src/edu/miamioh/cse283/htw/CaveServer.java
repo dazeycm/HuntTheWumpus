@@ -197,7 +197,7 @@ public class CaveServer {
 									break;
 								case Room.HOLE:
 									entryMessage.add("You fell down into a pit and broke both of your legs.");
-									entryMessage.add("You're trapped, son. RIP");
+									entryMessage.add("You're trapped, son. RIP.");
 									client.sendNotifications(entryMessage);
 									client.died();
 									break;

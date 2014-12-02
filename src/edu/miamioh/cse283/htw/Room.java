@@ -99,7 +99,7 @@ public class Room {
 				msg.add("You smell Kyle in a nearby room.");
 				break;
 			case HOLE:
-				msg.add("You feel a draft. There's probably a hole or something nearby");
+				msg.add("You feel a draft. There's probably a hole or something nearby".);
 				break;
 			case BATS:
 				msg.add("You hear Kyle's minions screeching in a nearby room.");
