@@ -62,6 +62,9 @@ public class CaveServer {
 				}
 			}
 		}
+		
+		// give a room a ladder
+		rooms.get(10).hasLadder = true;
 
 		// connect them to each other:
 		for(int i=0; i<20; ++i) {

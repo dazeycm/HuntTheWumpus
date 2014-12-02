@@ -8,6 +8,7 @@ public class Room {
 	public static final int WUMPUS = 1;
 	public static final int HOLE = 2;
 	public static final int BATS = 3;
+	public boolean hasLadder;
 	protected int gold = 0;
 	protected int arrows = 0;
 	
@@ -30,6 +31,7 @@ public class Room {
 		this.danger = danger;
 		gold = 0;
 		arrows = 0;
+		hasLadder = false;
 		
 	}
 	
