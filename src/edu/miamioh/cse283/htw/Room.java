@@ -85,6 +85,28 @@ public class Room {
  			}
 		}
 		msg.add(t);
+		
+		if(this.gold > 0){
+			msg.add("There's something shiny in the corner! Better pick it up!");
+		}
+		if(this.arrows > 0)	{
+			msg.add("WOAH! IS THAT AN ARROW ON THE GROUND?!");
+		}
+		
+		for(Room r : connected)	{
+			switch(r.danger)	{
+			case WUMPUS:
+				msg.add("You smell Kyle in a nearby room.");
+				break;
+			case HOLE:
+				msg.add("You feel a draft. There's probably a hole or something nearby");
+				break;
+			case BATS:
+				msg.add("You hear Kyle's minions screeching in a nearby room.");
+				break;
+			}
+		}
+		
 		return msg;
 	}
 }
