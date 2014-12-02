@@ -32,7 +32,6 @@ public class Room {
 		gold = 0;
 		arrows = 0;
 		hasLadder = false;
-		
 	}
 	
 	/** Set this room's id number. */
