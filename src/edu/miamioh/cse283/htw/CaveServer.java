@@ -39,6 +39,7 @@ public class CaveServer {
 		int wumpusCheck = 0;
 		for(int i=0; i<20; ++i) {
 			int danger = Room.NONE;
+			int goldToAdd = 0;
 			int dangerCheck = rng.nextInt(101);
 			if(dangerCheck < 10 && wumpusCheck == 0){
 				danger = Room.WUMPUS;
@@ -50,8 +51,10 @@ public class CaveServer {
 			else if(dangerCheck > 40 && dangerCheck < 50)	{
 				danger = Room.HOLE;
 			}
-			
-			rooms.add(new Room(danger));
+			else if(dangerCheck > 50 && dangerCheck < 75)	{
+				goldToAdd = 500;
+			}
+			rooms.add(new Room(danger, goldToAdd));
 		}
 		if (wumpusCheck == 0)	{
 			while (wumpusCheck == 0)	{

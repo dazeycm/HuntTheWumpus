@@ -25,11 +25,11 @@ public class Room {
 	protected int roomId;
 	
 	/** Constructor. */
-	public Room(int danger) {
+	public Room(int danger, int gold) {
 		players = new ArrayList<ClientProxy>();
 		connected = new ArrayList<Room>();
 		this.danger = danger;
-		gold = 0;
+		this.gold += gold;
 		arrows = 0;
 		hasLadder = false;
 	}
