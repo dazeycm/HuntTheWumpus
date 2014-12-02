@@ -4,6 +4,13 @@ import java.util.*;
 
 public class Room {
 	
+	public static final int NONE = 0;
+	public static final int WUMPUS = 1;
+	public static final int HOLE = 2;
+	public static final int BATS = 3;
+	/** Danger in the room */
+	protected int danger;
+	
 	/** Players currently in this room. */
 	protected ArrayList<ClientProxy> players;
 
@@ -17,6 +24,8 @@ public class Room {
 	public Room() {
 		players = new ArrayList<ClientProxy>();
 		connected = new HashSet<Room>();
+		this.danger = 0;
+		
 	}
 	
 	/** Set this room's id number. */
