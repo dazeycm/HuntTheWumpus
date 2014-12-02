@@ -7,9 +7,10 @@ import java.util.*;
 /**
  * The CaveServer class takes the following command-line parameters:
  * 
- * <Hostname of CaveSystemServer> <port number of CaveSystemServer> <port number of this CaveServer>
+ * <Hostname of CaveSystemServer> <port number of CaveSystemServer> <port number
+ * of this CaveServer>
  * 
- * E.g., "localhost 1234 2000" 
+ * E.g., "localhost 1234 2000"
  */
 public class CaveServer {
 
@@ -37,55 +38,57 @@ public class CaveServer {
 		// construct the rooms:
 		rooms = new ArrayList<Room>();
 		int wumpusCheck = 0;
-		for(int i=0; i<20; ++i) {
+		for (int i = 0; i < 20; ++i) {
 			int danger = Room.NONE;
 			int goldToAdd = 0;
 			int dangerCheck = rng.nextInt(101);
-			if(dangerCheck < 10 && wumpusCheck == 0){
+			if (dangerCheck < 10 && wumpusCheck == 0) {
 				danger = Room.WUMPUS;
 				wumpusCheck = 1;
-			}
-			else if(dangerCheck > 20 && dangerCheck < 30)	{
+			} else if (dangerCheck > 20 && dangerCheck < 30) {
 				danger = Room.BATS;
-			}
-			else if(dangerCheck > 40 && dangerCheck < 50)	{
+			} else if (dangerCheck > 40 && dangerCheck < 50) {
 				danger = Room.HOLE;
-			}
-			else if(dangerCheck > 50 && dangerCheck < 75)	{
+			} else if (dangerCheck > 50 && dangerCheck < 75) {
 				goldToAdd = 500;
 			}
 			rooms.add(new Room(danger, goldToAdd));
 		}
-		if (wumpusCheck == 0)	{
-			while (wumpusCheck == 0)	{
+		if (wumpusCheck == 0) {
+			while (wumpusCheck == 0) {
 				int wumpusRoom = rng.nextInt(20);
-				if(rooms.get(wumpusRoom).danger != Room.BATS && rooms.get(wumpusRoom).danger != Room.HOLE )	{
+				if (rooms.get(wumpusRoom).danger != Room.BATS
+						&& rooms.get(wumpusRoom).danger != Room.HOLE) {
 					rooms.get(wumpusRoom).danger = Room.WUMPUS;
 					wumpusCheck = 1;
 				}
 			}
 		}
-		
+
 		// give a room a ladder
 		rooms.get(10).hasLadder = true;
 
 		// connect them to each other:
-		for(int i=0; i<20; ++i) {
-			rooms.get(i).connectRoom(rooms.get((i+1)%20));
-			rooms.get(i).connectRoom(rooms.get((i+2)%20));
+		for (int i = 0; i < 20; ++i) {
+			rooms.get(i).connectRoom(rooms.get((i + 1) % 20));
+			rooms.get(i).connectRoom(rooms.get((i + 2) % 20));
 		}
 
 		// and give them random ids:
 		HashSet<Integer> ids = new HashSet<Integer>();
-		for(int i=0; i<20; ++i) {
+		for (int i = 0; i < 20; ++i) {
 			int r = rng.nextInt(100);
-			while(ids.contains(r)) { r = rng.nextInt(100); }
+			while (ids.contains(r)) {
+				r = rng.nextInt(100);
+			}
 			rooms.get(i).setIdNumber(r);
 		}
 	}
 
 	/** Returns the port number to use for accepting client connections. */
-	public int getClientPort() { return portBase; }
+	public int getClientPort() {
+		return portBase;
+	}
 
 	/** Returns an initial room for a client. */
 	public synchronized Room getInitialRoom() {
@@ -94,7 +97,10 @@ public class CaveServer {
 
 	/** This is the thread that handles a single client connection. */
 	public class ClientThread implements Runnable {
-		/** This is our "client" (actually, a proxy to the network-connected client). */
+		/**
+		 * This is our "client" (actually, a proxy to the network-connected
+		 * client).
+		 */
 		protected ClientProxy client;
 
 		/** Notification messages. */
@@ -102,10 +108,10 @@ public class CaveServer {
 
 		/** Whether this player is alive. */
 		protected boolean alive;
-		
+
 		/** Number of client's arrows */
 		protected int gold;
-		
+
 		/** Number of client's arrows */
 		protected int arrows;
 
@@ -118,7 +124,10 @@ public class CaveServer {
 			this.arrows = 3;
 		}
 
-		/** Returns true if there are notifications that should be sent to this client. */
+		/**
+		 * Returns true if there are notifications that should be sent to this
+		 * client.
+		 */
 		public synchronized boolean hasNotifications() {
 			return !notifications.isEmpty();
 		}
@@ -145,10 +154,11 @@ public class CaveServer {
 			alive = false;
 		}
 
-		/** Play the game with this client.
+		/**
+		 * Play the game with this client.
 		 */
 		public void run() {
-			try {				
+			try {
 				// the first time a player connects, send a welcome message:
 				ArrayList<String> welcome = new ArrayList<String>();
 				welcome.add("Abandon all hope ye who enter here");
@@ -160,57 +170,68 @@ public class CaveServer {
 				r.enterRoom(client);
 				client.sendSenses(r.getSensed());
 
-				// while the player is alive, listen for commands from the player
+				// while the player is alive, listen for commands from the
+				// player
 				// and for activities elsewhere in the cave:
 				try {
-					while(true) {					
-						// poll, waiting for input from client or other notifications:
-						while(!client.ready() && !hasNotifications() && isAlive()) {
-							try { Thread.sleep(50);	} catch (InterruptedException ex) {	}
+					while (true) {
+						// poll, waiting for input from client or other
+						// notifications:
+						while (!client.ready() && !hasNotifications()
+								&& isAlive()) {
+							try {
+								Thread.sleep(50);
+							} catch (InterruptedException ex) {
+							}
 						}
 
 						// if there are notifications, send them:
-						if(hasNotifications()) {
+						if (hasNotifications()) {
 							client.sendNotifications(getNotifications());
 						}
 
-						// if the player is dead, send the DIED message and break:
-						if(!isAlive()) {
+						// if the player is dead, send the DIED message and
+						// break:
+						if (!isAlive()) {
 							client.died();
 							break;
 						}
 
 						// if the player did something, respond to it:
-						if(client.ready()) {
+						if (client.ready()) {
 							String line = client.nextLine().trim();
 
-							if(line.startsWith(Protocol.MOVE_ACTION)) {
+							if (line.startsWith(Protocol.MOVE_ACTION)) {
 								String[] action = line.split(" ");
 								int newRoom = Integer.parseInt(action[2]);
 								if (r.getRoom(newRoom) != null) {
 									r.leaveRoom(client);
 									r = r.getRoom(newRoom);
-									
+
 									ArrayList<String> entryMessage = new ArrayList<String>();
-									switch(r.danger)	{
+									switch (r.danger) {
 									case Room.NONE:
 										r.players.add(client);
 										r.enterRoom(client);
 										client.sendSenses(r.getSensed());
 										break;
 									case Room.WUMPUS:
-										entryMessage.add("Kyle emerges from the shadows and slowly devours you!");
+										entryMessage
+												.add("Kyle emerges from the shadows and slowly devours you!");
 										client.sendNotifications(entryMessage);
 										client.died();
 										break;
 									case Room.HOLE:
-										entryMessage.add("You fell down into a pit and broke both of your legs.");
-										entryMessage.add("You're trapped, son. RIP.");
+										entryMessage
+												.add("You fell down into a pit and broke both of your legs.");
+										entryMessage
+												.add("You're trapped, son. RIP.");
 										client.sendNotifications(entryMessage);
 										client.died();
 										break;
 									case Room.BATS:
-										entryMessage.add("Kyle's bat minions swoop down and carry you to another room!");
+										entryMessage
+												.add("Kyle's bat minions swoop down and carry you to another room!");
 										client.sendNotifications(entryMessage);
 										Random rng = new Random();
 										r = rooms.get(rng.nextInt(20));
@@ -218,49 +239,65 @@ public class CaveServer {
 										client.sendSenses(r.getSensed());
 										break;
 									}
-								}else{
+								} else {
 									ArrayList<String> oops = new ArrayList<String>();
 									oops.add("You tried to enter an invalid room!");
 									client.sendNotifications(oops);
-								};
-							} else if(line.startsWith(Protocol.SHOOT_ACTION)) {
-								// shoot an arrow: split out the room number into which the arrow
-								// is to be shot, and then send an arrow into the right series of
-								// rooms.
-
-							} else if(line.startsWith(Protocol.PICKUP_ACTION)) {
-								ArrayList<String> notify = new ArrayList<String>();
-								if(r.gold > 0)	{
-									gold += r.gold;
-									notify.add("You picked up " + r.gold + " gold!");
-									r.gold = 0;
 								}
-								else if(r.arrows > 0)	{
+								;
+							} else if (line.startsWith(Protocol.SHOOT_ACTION)) {
+								// shoot an arrow: split out the room number
+								// into which the arrow
+								// is to be shot, and then send an arrow into
+								// the right series of
+								// rooms.
+								String[] action = line.split(" ");
+								int roomShoot = Integer.parseInt(action[2]);
+								ArrayList<String> notify = new ArrayList<String>();
+								if (arrows > 0) {
+
+								} else {
+									notify.add("You don't have any arrows, silly!");
+								}
+								client.sendNotifications(notify);
+
+							} else if (line.startsWith(Protocol.PICKUP_ACTION)) {
+								ArrayList<String> notify = new ArrayList<String>();
+								if (r.gold > 0) {
+									gold += r.gold;
+									notify.add("You picked up " + r.gold
+											+ " gold!");
+									r.gold = 0;
+								} else if (r.arrows > 0) {
 									arrows += r.arrows;
-									notify.add("You picked up " + r.arrows + "arrows!");
+									notify.add("You picked up " + r.arrows
+											+ "arrows!");
 									r.arrows = 0;
-								}									
-								else{
+								} else {
 									notify.add("There is nothing to pick up! Quit trying to find things that aren't there!");
 								}
 								client.sendNotifications(notify);
 
-							} else if(line.startsWith(Protocol.CLIMB_ACTION)) {
+							} else if (line.startsWith(Protocol.CLIMB_ACTION)) {
 								ArrayList<String> notify = new ArrayList<String>();
-								if(r.hasLadder){
-									notify.add("YOU HAVE OVERCOME THE TRIALS AND TRIBULATIONS OF KYLE'S CAVE. THROUGH YOUR JOURNEY YOU AMASSED " + 
-													gold + " gold and " + arrows + " arrows. Which I guess is something. But still not a lot.");
+								if (r.hasLadder) {
+									notify.add("YOU HAVE OVERCOME THE TRIALS AND TRIBULATIONS OF KYLE'S CAVE. THROUGH YOUR JOURNEY YOU AMASSED "
+											+ gold
+											+ " gold and "
+											+ arrows
+											+ " arrows. Which I guess is something. But still not a lot.");
 									client.sendNotifications(notify);
 									r.leaveRoom(client);
 									kill();
-								}else{
+								} else {
 									notify.add("LOL THERE ISN'T A LADDER IN HERE. But you just woke up Kyle, and now he's angry");
 									boolean hasChanged = false;
-									for(Room foo : rooms){
-										if(foo.danger == Room.WUMPUS && !hasChanged)	{
+									for (Room foo : rooms) {
+										if (foo.danger == Room.WUMPUS
+												&& !hasChanged) {
 											foo.danger = Room.NONE;
 											Room re = null;
-											while(re == null)	{
+											while (re == null) {
 												re = r.getRoom(rng.nextInt(101));
 											}
 											re.danger = Room.WUMPUS;
@@ -269,8 +306,8 @@ public class CaveServer {
 									}
 									client.sendNotifications(notify);
 								}
-								
-							} else if(line.startsWith(Protocol.QUIT)) {
+
+							} else if (line.startsWith(Protocol.QUIT)) {
 								r.gold += gold;
 								r.arrows += arrows;
 								gold = 0;
@@ -286,11 +323,11 @@ public class CaveServer {
 					}
 				} finally {
 					// make sure the client leaves whichever room they're in,
-					// and close the client's socket: 
+					// and close the client's socket:
 					r.leaveRoom(client);
 					client.close();
 				}
-			} catch(Exception ex) {
+			} catch (Exception ex) {
 				// If an exception is thrown, we can't fix it here -- Crash.
 				ex.printStackTrace();
 				System.exit(1);
@@ -308,12 +345,12 @@ public class CaveServer {
 			System.out.println("CaveServer registered");
 
 			// then, loop forever accepting Client connections:
-			while(true) {
+			while (true) {
 				ClientProxy client = new ClientProxy(clientSocket.accept());
 				System.out.println("Client connected");
 				(new Thread(new ClientThread(client))).start();
 			}
-		} catch(Exception ex) {
+		} catch (Exception ex) {
 			ex.printStackTrace();
 			System.exit(1);
 		}
@@ -322,23 +359,24 @@ public class CaveServer {
 	/** Main method (run the CaveServer). */
 	public static void main(String[] args) {
 		try {
-			InetAddress addr=InetAddress.getByName("localhost");
-			int cssPortBase=1234;
-			int cavePortBase=2000;
+			InetAddress addr = InetAddress.getByName("localhost");
+			int cssPortBase = 1234;
+			int cavePortBase = 2000;
 
-			if(args.length > 0) {
+			if (args.length > 0) {
 				addr = InetAddress.getByName(args[0]);
 				cssPortBase = Integer.parseInt(args[1]);
 				cavePortBase = Integer.parseInt(args[2]);
 			}
 
 			// first, we need our proxy object to the CaveSystemServer:
-			CaveSystemServerProxy caveSystem = new CaveSystemServerProxy(new Socket(addr, cssPortBase+1));
+			CaveSystemServerProxy caveSystem = new CaveSystemServerProxy(
+					new Socket(addr, cssPortBase + 1));
 
 			// now construct this cave server, and run it:
 			CaveServer cs = new CaveServer(caveSystem, cavePortBase);
 			cs.run();
-		} catch(IOException ex) {
+		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
 	}
