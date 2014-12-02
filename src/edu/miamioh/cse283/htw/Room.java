@@ -67,7 +67,7 @@ public class Room {
 	/** Returns a string describing what a player sees in this room. */
 	public synchronized ArrayList<String> getSensed() {
 		ArrayList<String> msg = new ArrayList<String>();
-		msg.add("You are in an empty room.");
+		msg.add("You are in room: " + getIdNumber());
 		String t = "You see tunnels to rooms ";
 		int c = 0;
 		for(Room r : connected) {
