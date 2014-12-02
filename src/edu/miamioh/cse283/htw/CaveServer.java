@@ -51,6 +51,8 @@ public class CaveServer {
 				danger = Room.HOLE;
 			}
 			
+			danger = Room.BATS;
+			
 			rooms.add(new Room(danger));
 		}
 		if (wumpusCheck == 0)	{
@@ -143,7 +145,7 @@ public class CaveServer {
 				// Put the player in an initial room and send them their initial
 				// sensory information:
 				Room r = getInitialRoom();
-				r.enterRoom(client, rooms);
+				r.enterRoom(client);
 				client.sendSenses(r.getSensed());
 
 				// while the player is alive, listen for commands from the player
@@ -179,8 +181,43 @@ public class CaveServer {
 								int newRoom = Integer.parseInt(action[2]);
 								r.leaveRoom(client);
 								r = r.getRoom(newRoom);
-								r.enterRoom(client, rooms);
+								r.enterRoom(client);
 								client.sendSenses(r.getSensed());
+								
+								ArrayList<String> entryMessage = new ArrayList<String>();
+								switch(r.danger)	{
+								case Room.NONE:
+									r.players.add(client);
+									break;
+								case Room.WUMPUS:
+									entryMessage.add("Kyle emerges from the shadows and slowly devours you!");
+									client.sendNotifications(entryMessage);
+									client.died();
+									break;
+								case Room.HOLE:
+									entryMessage.add("You fell down into a pit and broke both of your legs.");
+									entryMessage.add("You're trapped, son. RIP");
+									client.sendNotifications(entryMessage);
+									client.died();
+									break;
+								case Room.BATS:
+									entryMessage.add("Kyle's bat minions swoop down and carry you to another room!");
+									client.sendNotifications(entryMessage);
+									r.players.remove(client);
+									Random rng = new Random();
+									
+									boolean lazy = true;
+									while(lazy)	{
+										int newnewRoom = rng.nextInt(101);
+										if(rooms.contains(newnewRoom))	{
+											Room newR = rooms.get(newnewRoom);
+											newR.players.add(client);
+											client.sendSenses(r.getSensed());
+											lazy = false;
+										}
+									}
+									
+								}
 
 							} else if(line.startsWith(Protocol.SHOOT_ACTION)) {
 								// shoot an arrow: split out the room number into which the arrow

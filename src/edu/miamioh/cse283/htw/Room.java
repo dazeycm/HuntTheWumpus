@@ -46,40 +46,8 @@ public class Room {
 	}
 	
 	/** Called when a player enters this room. */
-	public synchronized void enterRoom(ClientProxy c, ArrayList<Room> rooms) {
-		ArrayList<String> entryMessage = new ArrayList<String>();
-		switch(danger)	{
-		case NONE:
-			players.add(c);
-			break;
-		case WUMPUS:
-			entryMessage.add("Kyle emerges from the shadows and slowly devours you!");
-			c.sendNotifications(entryMessage);
-			c.died();
-			break;
-		case HOLE:
-			entryMessage.add("You fell down into a pit and broke both of your legs.");
-			entryMessage.add("You're trapped, son. RIP");
-			c.sendNotifications(entryMessage);
-			c.died();
-			break;
-		case BATS:
-			entryMessage.add("Kyle's bat minions swoop down and carry you to another room!");
-			c.sendNotifications(entryMessage);
-			this.players.remove(c);
-			Random rng = new Random();
-			
-			boolean lazy = true;
-			while(lazy)	{
-				int newRoom = rng.nextInt(0);
-				if(rooms.contains(newRoom))	{
-					rooms.get(newRoom).players.add(c);
-					c.sendSenses(getSensed());
-					lazy = false;
-				}
-			}
-			
-		}
+	public synchronized void enterRoom(ClientProxy c) {
+		players.add(c);
 	}
 	
 	/** Called when a player leaves this room. */
