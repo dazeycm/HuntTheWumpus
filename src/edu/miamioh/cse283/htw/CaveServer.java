@@ -143,7 +143,7 @@ public class CaveServer {
 				// Put the player in an initial room and send them their initial
 				// sensory information:
 				Room r = getInitialRoom();
-				r.enterRoom(client);
+				r.enterRoom(client, rooms);
 				client.sendSenses(r.getSensed());
 
 				// while the player is alive, listen for commands from the player
@@ -179,7 +179,7 @@ public class CaveServer {
 								int newRoom = Integer.parseInt(action[2]);
 								r.leaveRoom(client);
 								r = r.getRoom(newRoom);
-								r.enterRoom(client);
+								r.enterRoom(client, rooms);
 								client.sendSenses(r.getSensed());
 
 							} else if(line.startsWith(Protocol.SHOOT_ACTION)) {

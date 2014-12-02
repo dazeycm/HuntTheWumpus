@@ -46,7 +46,7 @@ public class Room {
 	}
 	
 	/** Called when a player enters this room. */
-	public synchronized void enterRoom(ClientProxy c) {
+	public synchronized void enterRoom(ClientProxy c, ArrayList<Room> rooms) {
 		ArrayList<String> entryMessage = new ArrayList<String>();
 		switch(danger)	{
 		case NONE:
@@ -67,6 +67,18 @@ public class Room {
 			entryMessage.add("Kyle's bat minions swoop down and carry you to another room!");
 			c.sendNotifications(entryMessage);
 			this.players.remove(c);
+			Random rng = new Random();
+			
+			boolean lazy = true;
+			while(lazy)	{
+				int newRoom = rng.nextInt(0);
+				if(rooms.contains(newRoom))	{
+					rooms.get(newRoom).players.add(c);
+					c.sendSenses(getSensed());
+					lazy = false;
+				}
+			}
+			
 		}
 	}
 	
