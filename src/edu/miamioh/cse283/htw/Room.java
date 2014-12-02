@@ -41,7 +41,7 @@ public class Room {
 	/** Connect room r to this room (bidirectional). */
 	public void connectRoom(Room r) {
 		connected.add(r);
-		r.connected.add(r);
+		r.connected.add(this);
 	}
 	
 	/** Called when a player enters this room. */
