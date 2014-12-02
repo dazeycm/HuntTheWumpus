@@ -36,8 +36,31 @@ public class CaveServer {
 
 		// construct the rooms:
 		rooms = new ArrayList<Room>();
+		int wumpusCheck = 0;
 		for(int i=0; i<20; ++i) {
-			rooms.add(new Room());
+			int danger = Room.NONE;
+			int dangerCheck = rng.nextInt(101);
+			if(dangerCheck < 10 && wumpusCheck == 0){
+				danger = Room.WUMPUS;
+				wumpusCheck = 1;
+			}
+			else if(dangerCheck > 20 && dangerCheck < 30)	{
+				danger = Room.BATS;
+			}
+			else if(dangerCheck > 40 && dangerCheck < 50)	{
+				danger = Room.HOLE;
+			}
+			
+			rooms.add(new Room(danger));
+		}
+		if (wumpusCheck == 0)	{
+			while (wumpusCheck == 0)	{
+				int wumpusRoom = rng.nextInt(20);
+				if(rooms.get(wumpusRoom).danger != Room.BATS && rooms.get(wumpusRoom).danger != Room.HOLE )	{
+					rooms.get(wumpusRoom).danger = Room.WUMPUS;
+					wumpusCheck = 1;
+				}
+			}
 		}
 
 		// connect them to each other:

@@ -21,10 +21,10 @@ public class Room {
 	protected int roomId;
 	
 	/** Constructor. */
-	public Room() {
+	public Room(int danger) {
 		players = new ArrayList<ClientProxy>();
 		connected = new HashSet<Room>();
-		this.danger = 0;
+		this.danger = danger;
 		
 	}
 	
