@@ -182,6 +182,11 @@ public class CaveServer {
 								r.enterRoom(client);
 								client.sendSenses(r.getSensed());
 								
+								/*switch (r.danger)	{
+								//case Room.WUMPUS
+								break;
+								}*/
+								
 
 							} else if(line.startsWith(Protocol.SHOOT_ACTION)) {
 								// shoot an arrow: split out the room number into which the arrow
