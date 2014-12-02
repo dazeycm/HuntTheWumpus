@@ -51,8 +51,6 @@ public class CaveServer {
 				danger = Room.HOLE;
 			}
 			
-			danger = Room.BATS;
-			
 			rooms.add(new Room(danger));
 		}
 		if (wumpusCheck == 0)	{
@@ -181,13 +179,13 @@ public class CaveServer {
 								int newRoom = Integer.parseInt(action[2]);
 								r.leaveRoom(client);
 								r = r.getRoom(newRoom);
-								r.enterRoom(client);
-								client.sendSenses(r.getSensed());
 								
 								ArrayList<String> entryMessage = new ArrayList<String>();
 								switch(r.danger)	{
 								case Room.NONE:
 									r.players.add(client);
+									r.enterRoom(client);
+									client.sendSenses(r.getSensed());
 									break;
 								case Room.WUMPUS:
 									entryMessage.add("Kyle emerges from the shadows and slowly devours you!");
@@ -203,20 +201,11 @@ public class CaveServer {
 								case Room.BATS:
 									entryMessage.add("Kyle's bat minions swoop down and carry you to another room!");
 									client.sendNotifications(entryMessage);
-									r.players.remove(client);
 									Random rng = new Random();
-									
-									boolean lazy = true;
-									while(lazy)	{
-										int newnewRoom = rng.nextInt(101);
-										if(rooms.contains(newnewRoom))	{
-											Room newR = rooms.get(newnewRoom);
-											newR.players.add(client);
-											client.sendSenses(r.getSensed());
-											lazy = false;
-										}
-									}
-									
+									r = rooms.get(rng.nextInt(20));
+									r.players.add(client);
+									client.sendSenses(r.getSensed());
+									break;
 								}
 
 							} else if(line.startsWith(Protocol.SHOOT_ACTION)) {
