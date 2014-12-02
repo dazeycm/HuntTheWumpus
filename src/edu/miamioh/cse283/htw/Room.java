@@ -16,7 +16,7 @@ public class Room {
 	protected ArrayList<ClientProxy> players;
 
 	/** Rooms that this room is connected to. */
-	protected HashSet<Room> connected;
+	protected ArrayList<Room> connected;
 
 	/** ID number of this room. */
 	protected int roomId;
@@ -24,7 +24,7 @@ public class Room {
 	/** Constructor. */
 	public Room(int danger) {
 		players = new ArrayList<ClientProxy>();
-		connected = new HashSet<Room>();
+		connected = new ArrayList<Room>();
 		this.danger = danger;
 		
 	}
