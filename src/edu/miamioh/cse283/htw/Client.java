@@ -97,21 +97,27 @@ public class Client {
 					Matcher climb = climbPattern.matcher(line);
 
 					if(connect.matches()) {
+						lastSenses.clear();
 						cave.connect(connect.group(1));
 						
 					} else if(move.matches()) {
+						lastSenses.clear();
 						cave.move(move.group(1));
 						
 					} else if(shoot.matches()) {
+						lastSenses.clear();
 						cave.shoot(shoot.group(1));
 						
 					} else if(pickup.matches()) {
+						lastSenses.clear();
 						cave.pickup();
 						
 					} else if(quit.matches()) {
+						lastSenses.clear();
 						alive = false;
 						
 					} else if(climb.matches()) {
+						lastSenses.clear();
 						cave.climb();
 						
 					} else {
