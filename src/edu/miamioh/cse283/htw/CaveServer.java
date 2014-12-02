@@ -185,10 +185,6 @@ public class CaveServer {
 							String line = client.nextLine().trim();
 
 							if(line.startsWith(Protocol.MOVE_ACTION)) {
-								// move the player: split out the room number, move the player, etc.
-								// client has to leave the room: r.leaveRoom(client)
-								// and enter the new room: newRoom.enterRoom(client)
-								// send the client new senses here: client.sendSenses(r.getSensed());
 								String[] action = line.split(" ");
 								int newRoom = Integer.parseInt(action[2]);
 								if (r.getRoom(newRoom) != null) {
@@ -250,10 +246,6 @@ public class CaveServer {
 								client.sendNotifications(notify);
 
 							} else if(line.startsWith(Protocol.CLIMB_ACTION)) {
-								// climb the ladder, if the player is in a room with a ladder.
-								// send a notification telling the player his score
-								// and some kind of congratulations, and then kill
-								// the player to end the game -- call kill(), above.
 								ArrayList<String> notify = new ArrayList<String>();
 								if(r.hasLadder){
 									notify.add("YOU HAVE OVERCOME THE TRIALS AND TRIBULATIONS OF KYLE'S CAVE. THROUGH YOUR JOURNEY YOU AMASSED " + 
@@ -279,14 +271,17 @@ public class CaveServer {
 								}
 								
 							} else if(line.startsWith(Protocol.QUIT)) {
-								// no response: drop gold and arrows, and break.
+								r.gold += gold;
+								r.arrows += arrows;
+								gold = 0;
+								arrows = 0;
 								break;
 
 							} else {
-								// invalid response; send the client some kind of error message
-								// (as a notificiation).
+								ArrayList<String> notify = new ArrayList<String>();
+								notify.add("Something went horribly awfully wrong!");
+								client.sendNotifications(notify);
 							}
-							
 						}
 					}
 				} finally {
