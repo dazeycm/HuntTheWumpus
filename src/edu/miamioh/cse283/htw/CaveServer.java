@@ -255,7 +255,11 @@ public class CaveServer {
 								int roomShoot = Integer.parseInt(action[2]);
 								ArrayList<String> notify = new ArrayList<String>();
 								if (arrows > 0) {
-
+									if(r.getRoom(roomShoot) != null)	{
+										
+									} else	{
+										notify.add("You entered an invalid room!");
+									}
 								} else {
 									notify.add("You don't have any arrows, silly!");
 								}
