@@ -175,6 +175,7 @@ public class CaveServer {
 								// client has to leave the room: r.leaveRoom(client)
 								// and enter the new room: newRoom.enterRoom(client)
 								// send the client new senses here: client.sendSenses(r.getSensed());
+								
 
 							} else if(line.startsWith(Protocol.SHOOT_ACTION)) {
 								// shoot an arrow: split out the room number into which the arrow
