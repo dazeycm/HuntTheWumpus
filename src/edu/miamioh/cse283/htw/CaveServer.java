@@ -263,6 +263,18 @@ public class CaveServer {
 									kill();
 								}else{
 									notify.add("LOL THERE ISN'T A LADDER IN HERE. But you just woke up Kyle, and now he's angry");
+									boolean hasChanged = false;
+									for(Room foo : rooms){
+										if(foo.danger == Room.WUMPUS && !hasChanged)	{
+											foo.danger = Room.NONE;
+											Room re = null;
+											while(re == null)	{
+												re = r.getRoom(rng.nextInt(101));
+											}
+											re.danger = Room.WUMPUS;
+											hasChanged = true;
+										}
+									}
 									client.sendNotifications(notify);
 								}
 								
