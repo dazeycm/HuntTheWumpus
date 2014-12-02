@@ -137,7 +137,7 @@ public class CaveServer {
 			try {				
 				// the first time a player connects, send a welcome message:
 				ArrayList<String> welcome = new ArrayList<String>();
-				welcome.add("Welcome!");
+				welcome.add("Abandon all hope ye who enter here");
 				client.sendNotifications(welcome);
 
 				// Put the player in an initial room and send them their initial
@@ -175,6 +175,12 @@ public class CaveServer {
 								// client has to leave the room: r.leaveRoom(client)
 								// and enter the new room: newRoom.enterRoom(client)
 								// send the client new senses here: client.sendSenses(r.getSensed());
+								String[] action = line.split(" ");
+								int newRoom = Integer.parseInt(action[2]);
+								r.leaveRoom(client);
+								r = r.getRoom(newRoom);
+								r.enterRoom(client);
+								client.sendSenses(r.getSensed());
 								
 
 							} else if(line.startsWith(Protocol.SHOOT_ACTION)) {
