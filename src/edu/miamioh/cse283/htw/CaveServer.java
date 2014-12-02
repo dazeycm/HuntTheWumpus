@@ -183,37 +183,42 @@ public class CaveServer {
 								// send the client new senses here: client.sendSenses(r.getSensed());
 								String[] action = line.split(" ");
 								int newRoom = Integer.parseInt(action[2]);
-								r.leaveRoom(client);
-								r = r.getRoom(newRoom);
-								
-								ArrayList<String> entryMessage = new ArrayList<String>();
-								switch(r.danger)	{
-								case Room.NONE:
-									r.players.add(client);
-									r.enterRoom(client);
-									client.sendSenses(r.getSensed());
-									break;
-								case Room.WUMPUS:
-									entryMessage.add("Kyle emerges from the shadows and slowly devours you!");
-									client.sendNotifications(entryMessage);
-									client.died();
-									break;
-								case Room.HOLE:
-									entryMessage.add("You fell down into a pit and broke both of your legs.");
-									entryMessage.add("You're trapped, son. RIP.");
-									client.sendNotifications(entryMessage);
-									client.died();
-									break;
-								case Room.BATS:
-									entryMessage.add("Kyle's bat minions swoop down and carry you to another room!");
-									client.sendNotifications(entryMessage);
-									Random rng = new Random();
-									r = rooms.get(rng.nextInt(20));
-									r.players.add(client);
-									client.sendSenses(r.getSensed());
-									break;
-								}
-
+								if (r.getRoom(newRoom) != null) {
+									r.leaveRoom(client);
+									r = r.getRoom(newRoom);
+									
+									ArrayList<String> entryMessage = new ArrayList<String>();
+									switch(r.danger)	{
+									case Room.NONE:
+										r.players.add(client);
+										r.enterRoom(client);
+										client.sendSenses(r.getSensed());
+										break;
+									case Room.WUMPUS:
+										entryMessage.add("Kyle emerges from the shadows and slowly devours you!");
+										client.sendNotifications(entryMessage);
+										client.died();
+										break;
+									case Room.HOLE:
+										entryMessage.add("You fell down into a pit and broke both of your legs.");
+										entryMessage.add("You're trapped, son. RIP.");
+										client.sendNotifications(entryMessage);
+										client.died();
+										break;
+									case Room.BATS:
+										entryMessage.add("Kyle's bat minions swoop down and carry you to another room!");
+										client.sendNotifications(entryMessage);
+										Random rng = new Random();
+										r = rooms.get(rng.nextInt(20));
+										r.players.add(client);
+										client.sendSenses(r.getSensed());
+										break;
+									}
+								}else{
+									ArrayList<String> oops = new ArrayList<String>();
+									oops.add("You tried to enter an invalid room!");
+									client.sendNotifications(oops);
+								};
 							} else if(line.startsWith(Protocol.SHOOT_ACTION)) {
 								// shoot an arrow: split out the room number into which the arrow
 								// is to be shot, and then send an arrow into the right series of
@@ -236,6 +241,7 @@ public class CaveServer {
 								// invalid response; send the client some kind of error message
 								// (as a notificiation).
 							}
+							
 						}
 					}
 				} finally {
