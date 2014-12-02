@@ -102,12 +102,20 @@ public class CaveServer {
 
 		/** Whether this player is alive. */
 		protected boolean alive;
+		
+		/** Number of client's arrows */
+		protected int gold;
+		
+		/** Number of client's arrows */
+		protected int arrows;
 
 		/** Constructor. */
 		public ClientThread(ClientProxy client) {
 			this.client = client;
 			this.notifications = new ArrayList<String>();
 			this.alive = true;
+			this.gold = 0;
+			this.arrows = 3;
 		}
 
 		/** Returns true if there are notifications that should be sent to this client. */
@@ -225,7 +233,12 @@ public class CaveServer {
 								// rooms.
 
 							} else if(line.startsWith(Protocol.PICKUP_ACTION)) {
-								// pickup gold / arrows.
+								if(r.gold > 0 || r.arrows > 0){
+									
+								}else{
+									ArrayList<String> notify = new ArrayList<String>();
+									notify.add("There is nothing to pick up! Quit trying to find things that aren't there!");
+								}
 
 							} else if(line.startsWith(Protocol.CLIMB_ACTION)) {
 								// climb the ladder, if the player is in a room with a ladder.
