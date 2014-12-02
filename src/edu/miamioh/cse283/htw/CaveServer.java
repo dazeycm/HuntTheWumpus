@@ -272,11 +272,15 @@ public class CaveServer {
 									notify.add("You picked up " + r.gold
 											+ " gold!");
 									r.gold = 0;
+									notify.add("You now have " + r.gold
+											+ " gold!");
 								} else if (r.arrows > 0) {
 									arrows += r.arrows;
 									notify.add("You picked up " + r.arrows
-											+ "arrows!");
+											+ " arrows!");
 									r.arrows = 0;
+									notify.add("You now have " + r.arrows
+											+ " arrows!");
 								} else {
 									notify.add("There is nothing to pick up! Quit trying to find things that aren't there!");
 								}
