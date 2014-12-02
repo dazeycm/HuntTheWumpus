@@ -8,6 +8,8 @@ public class Room {
 	public static final int WUMPUS = 1;
 	public static final int HOLE = 2;
 	public static final int BATS = 3;
+	protected int gold = 0;
+	protected int arrows = 0;
 	
 	/** Danger in the room */
 	protected int danger;
@@ -26,6 +28,8 @@ public class Room {
 		players = new ArrayList<ClientProxy>();
 		connected = new ArrayList<Room>();
 		this.danger = danger;
+		gold = 0;
+		arrows = 0;
 		
 	}
 	
