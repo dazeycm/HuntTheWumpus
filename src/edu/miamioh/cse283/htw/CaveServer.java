@@ -233,18 +233,38 @@ public class CaveServer {
 								// rooms.
 
 							} else if(line.startsWith(Protocol.PICKUP_ACTION)) {
-								if(r.gold > 0 || r.arrows > 0){
-									
-								}else{
-									ArrayList<String> notify = new ArrayList<String>();
+								ArrayList<String> notify = new ArrayList<String>();
+								if(r.gold > 0)	{
+									gold += r.gold;
+									notify.add("You picked up " + r.gold + " gold!");
+									r.gold = 0;
+								}
+								else if(r.arrows > 0)	{
+									arrows += r.arrows;
+									notify.add("You picked up " + r.arrows + "arrows!");
+									r.arrows = 0;
+								}									
+								else{
 									notify.add("There is nothing to pick up! Quit trying to find things that aren't there!");
 								}
+								client.sendNotifications(notify);
 
 							} else if(line.startsWith(Protocol.CLIMB_ACTION)) {
 								// climb the ladder, if the player is in a room with a ladder.
 								// send a notification telling the player his score
 								// and some kind of congratulations, and then kill
 								// the player to end the game -- call kill(), above.
+								ArrayList<String> notify = new ArrayList<String>();
+								if(r.hasLadder){
+									notify.add("YOU HAVE OVERCOME THE TRIALS AND TRIBULATIONS OF KYLE'S CAVE. THROUGH YOUR JOURNEY YOU AMASSED " + 
+													gold + " gold and " + arrows + " arrows. Which I guess is something. But still not a lot.");
+									client.sendNotifications(notify);
+									r.leaveRoom(client);
+									kill();
+								}else{
+									notify.add("LOL THERE ISN'T A LADDER IN HERE. But you just woke up Kyle, and now he's angry");
+									client.sendNotifications(notify);
+								}
 								
 							} else if(line.startsWith(Protocol.QUIT)) {
 								// no response: drop gold and arrows, and break.
