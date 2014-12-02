@@ -8,6 +8,7 @@ public class Room {
 	public static final int WUMPUS = 1;
 	public static final int HOLE = 2;
 	public static final int BATS = 3;
+	
 	/** Danger in the room */
 	protected int danger;
 	
@@ -46,7 +47,27 @@ public class Room {
 	
 	/** Called when a player enters this room. */
 	public synchronized void enterRoom(ClientProxy c) {
-		players.add(c);
+		ArrayList<String> entryMessage = new ArrayList<String>();
+		switch(danger)	{
+		case NONE:
+			players.add(c);
+			break;
+		case WUMPUS:
+			entryMessage.add("Kyle emerges from the shadows and slowly devours you!");
+			c.sendNotifications(entryMessage);
+			c.died();
+			break;
+		case HOLE:
+			entryMessage.add("You fell down into a pit and broke both of your legs.");
+			entryMessage.add("You're trapped, son. RIP");
+			c.sendNotifications(entryMessage);
+			c.died();
+			break;
+		case BATS:
+			entryMessage.add("Kyle's bat minions swoop down and carry you to another room!");
+			c.sendNotifications(entryMessage);
+			this.players.remove(c);
+		}
 	}
 	
 	/** Called when a player leaves this room. */
