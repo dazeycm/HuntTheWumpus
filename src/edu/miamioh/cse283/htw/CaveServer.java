@@ -245,11 +245,6 @@ public class CaveServer {
 								}
 								;
 							} else if (line.startsWith(Protocol.SHOOT_ACTION)) {
-								// shoot an arrow: split out the room number
-								// into which the arrow
-								// is to be shot, and then send an arrow into
-								// the right series of
-								// rooms.
 								String[] action = line.split(" ");
 								int roomShoot = Integer.parseInt(action[2]);
 								ArrayList<String> notify = new ArrayList<String>();
@@ -266,9 +261,9 @@ public class CaveServer {
 											r3 = r2.getRoom(rng.nextInt(101));
 										}
 										System.out.println(r1.getIdNumber() + " " + r2.getIdNumber() + " " + r3.getIdNumber());
-										notify.add("You fired an arrow!");
-										notify.add("You now have " + arrows + " left!");
+										notify.add("You fired an arrow! You now have " + arrows + " left.");
 										if(r.getRoom(roomShoot).danger == Room.WUMPUS)	{
+											notify.add("YOU KILLED KYLE! HOW COULD YOU?!");
 											r.getRoom(roomShoot).danger = Room.NONE;
 											r.getRoom(roomShoot).gold += 500;
 										}
@@ -276,7 +271,6 @@ public class CaveServer {
 										notify.add("You tried to fire an arrow into an invalid room!");
 										notify.add("Your arrow broke on the wall! :(");
 										arrows--;
-										notify.add("You now have " + arrows + " left!");
 									}
 								} else {
 									notify.add("You don't have any arrows, silly!");
