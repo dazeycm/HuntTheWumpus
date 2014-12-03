@@ -255,9 +255,16 @@ public class CaveServer {
 								ArrayList<String> notify = new ArrayList<String>();
 								if (arrows > 0) {
 									if(r.getRoom(roomShoot) != null)	{
-										
+										arrows -= 1;
+										notify.add("You fired an arrow!");
+										if(r.getRoom(roomShoot).danger == Room.WUMPUS)	{
+											r.getRoom(roomShoot).danger = Room.NONE;
+											r.getRoom(roomShoot).gold += 500;
+										}
 									} else	{
-										notify.add("You entered an invalid room!");
+										notify.add("You tried to fire an arrow into an invalid room!");
+										notify.add("Your arrow broke on the wall! :(");
+										arrows--;
 									}
 								} else {
 									notify.add("You don't have any arrows, silly!");
