@@ -265,7 +265,7 @@ public class CaveServer {
 										while (r3 == null) {
 											r3 = r2.getRoom(rng.nextInt(101));
 										}
-										System.out.println(r1 + " " + r2 + " " + r3);
+										System.out.println(r1.getIdNumber() + " " + r2.getIdNumber() + " " + r3.getIdNumber());
 										notify.add("You fired an arrow!");
 										notify.add("You now have " + arrows + " left!");
 										if(r.getRoom(roomShoot).danger == Room.WUMPUS)	{
