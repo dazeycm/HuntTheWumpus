@@ -262,7 +262,17 @@ public class CaveServer {
 										}
 										System.out.println(r1.getIdNumber() + " " + r2.getIdNumber() + " " + r3.getIdNumber());
 										notify.add("You fired an arrow! You now have " + arrows + " left.");
-										if(r.getRoom(roomShoot).danger == Room.WUMPUS)	{
+										if(r1.danger == Room.WUMPUS)	{
+											notify.add("YOU KILLED KYLE! HOW COULD YOU?!");
+											r.getRoom(roomShoot).danger = Room.NONE;
+											r.getRoom(roomShoot).gold += 500;
+										}
+										if(r2.danger == Room.WUMPUS)	{
+											notify.add("YOU KILLED KYLE! HOW COULD YOU?!");
+											r.getRoom(roomShoot).danger = Room.NONE;
+											r.getRoom(roomShoot).gold += 500;
+										}
+										if(r3.danger == Room.WUMPUS)	{
 											notify.add("YOU KILLED KYLE! HOW COULD YOU?!");
 											r.getRoom(roomShoot).danger = Room.NONE;
 											r.getRoom(roomShoot).gold += 500;
