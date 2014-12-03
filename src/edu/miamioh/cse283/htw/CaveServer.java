@@ -256,6 +256,16 @@ public class CaveServer {
 								if (arrows > 0) {
 									if(r.getRoom(roomShoot) != null)	{
 										arrows -= 1;
+										Room r1 = r.getRoom(roomShoot);
+										Room r2 = null;
+										Room r3 = null;
+										while (r2 == null) {
+											r2 = r1.getRoom(rng.nextInt(101));
+										}
+										while (r3 == null) {
+											r3 = r2.getRoom(rng.nextInt(101));
+										}
+										System.out.println(r1 + " " + r2 + " " + r3);
 										notify.add("You fired an arrow!");
 										if(r.getRoom(roomShoot).danger == Room.WUMPUS)	{
 											r.getRoom(roomShoot).danger = Room.NONE;
@@ -269,6 +279,7 @@ public class CaveServer {
 								} else {
 									notify.add("You don't have any arrows, silly!");
 								}
+								notify.add("You now have " + arrows + " left!");
 								client.sendNotifications(notify);
 
 							} else if (line.startsWith(Protocol.PICKUP_ACTION)) {
