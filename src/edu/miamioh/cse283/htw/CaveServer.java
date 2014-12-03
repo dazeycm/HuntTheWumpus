@@ -211,7 +211,6 @@ public class CaveServer {
 									ArrayList<String> entryMessage = new ArrayList<String>();
 									switch (r.danger) {
 									case Room.NONE:
-										r.players.add(client);
 										r.enterRoom(client);
 										client.sendSenses(r.getSensed());
 										break;
@@ -235,7 +234,7 @@ public class CaveServer {
 										client.sendNotifications(entryMessage);
 										Random rng = new Random();
 										r = rooms.get(rng.nextInt(20));
-										r.players.add(client);
+										r.enterRoom(client);
 										client.sendSenses(r.getSensed());
 										break;
 									}
@@ -272,14 +271,14 @@ public class CaveServer {
 									notify.add("You picked up " + r.gold
 											+ " gold!");
 									r.gold = 0;
-									notify.add("You now have " + r.gold
+									notify.add("You now have " + gold
 											+ " gold!");
 								} else if (r.arrows > 0) {
 									arrows += r.arrows;
 									notify.add("You picked up " + r.arrows
 											+ " arrows!");
 									r.arrows = 0;
-									notify.add("You now have " + r.arrows
+									notify.add("You now have " + arrows
 											+ " arrows!");
 								} else {
 									notify.add("There is nothing to pick up! Quit trying to find things that aren't there!");
