@@ -8,7 +8,7 @@ public class Room {
 	public static final int WUMPUS = 1;
 	public static final int HOLE = 2;
 	public static final int BATS = 3;
-	public boolean hasLadder;
+	public static final int LADDER = 4;
 	protected int gold = 0;
 	protected int arrows = 0;
 	
@@ -31,7 +31,6 @@ public class Room {
 		this.danger = danger;
 		this.gold += gold;
 		arrows = 0;
-		hasLadder = false;
 	}
 	
 	/** Set this room's id number. */
@@ -105,6 +104,8 @@ public class Room {
 			case BATS:
 				msg.add("You hear Kyle's minions screeching in a nearby room.");
 				break;
+			case LADDER:
+				msg.add("You smell wood nearby... ");
 			}
 		}
 		

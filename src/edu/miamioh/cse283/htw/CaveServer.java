@@ -66,7 +66,7 @@ public class CaveServer {
 		}
 
 		// give a room a ladder
-		rooms.get(10).hasLadder = true;
+		rooms.get(10).danger = Room.LADDER;
 
 		// connect them to each other:
 		for (int i = 0; i < 20; ++i) {
@@ -237,6 +237,11 @@ public class CaveServer {
 										r.enterRoom(client);
 										client.sendSenses(r.getSensed());
 										break;
+									case Room.LADDER:
+										r.enterRoom(client);
+										entryMessage.add("HOLY CRAP IS THAT THE LADDER?! YOU'RE GONNA' MAKE IT, BUDDY!");
+										client.sendSenses(r.getSensed());
+										break;
 									}
 								} else {
 									ArrayList<String> oops = new ArrayList<String>();
@@ -313,7 +318,7 @@ public class CaveServer {
 
 							} else if (line.startsWith(Protocol.CLIMB_ACTION)) {
 								ArrayList<String> notify = new ArrayList<String>();
-								if (r.hasLadder) {
+								if (r.danger == Room.LADDER) {
 									notify.add("YOU HAVE OVERCOME THE TRIALS AND TRIBULATIONS OF KYLE'S CAVE. THROUGH YOUR JOURNEY YOU AMASSED "
 											+ gold
 											+ " gold and "
