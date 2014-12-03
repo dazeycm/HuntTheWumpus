@@ -264,16 +264,19 @@ public class CaveServer {
 										notify.add("You fired an arrow! You now have " + arrows + " left.");
 										if(r1.danger == Room.WUMPUS)	{
 											notify.add("YOU KILLED KYLE! HOW COULD YOU?!");
+											notify.add("The smelly guy was in a room right next to you! Holy smokes!");
 											r1.danger = Room.NONE;
 											r1.gold += 500;
 										}
 										if(r2.danger == Room.WUMPUS)	{
 											notify.add("YOU KILLED KYLE! HOW COULD YOU?!");
+											notify.add("Kyle was killed 2 rooms away from you");
 											r2.danger = Room.NONE;
 											r2.gold += 500;
 										}
 										if(r3.danger == Room.WUMPUS)	{
 											notify.add("YOU KILLED KYLE! HOW COULD YOU?!");
+											notify.add("Kyle was killed 3 rooms away from you! Very impressive! Or was it just luck?");
 											r3.danger = Room.NONE;
 											r3.gold += 500;
 										}
