@@ -264,18 +264,18 @@ public class CaveServer {
 										notify.add("You fired an arrow! You now have " + arrows + " left.");
 										if(r1.danger == Room.WUMPUS)	{
 											notify.add("YOU KILLED KYLE! HOW COULD YOU?!");
-											r.getRoom(roomShoot).danger = Room.NONE;
-											r.getRoom(roomShoot).gold += 500;
+											r1.danger = Room.NONE;
+											r1.gold += 500;
 										}
 										if(r2.danger == Room.WUMPUS)	{
 											notify.add("YOU KILLED KYLE! HOW COULD YOU?!");
-											r.getRoom(roomShoot).danger = Room.NONE;
-											r.getRoom(roomShoot).gold += 500;
+											r2.danger = Room.NONE;
+											r2.gold += 500;
 										}
 										if(r3.danger == Room.WUMPUS)	{
 											notify.add("YOU KILLED KYLE! HOW COULD YOU?!");
-											r.getRoom(roomShoot).danger = Room.NONE;
-											r.getRoom(roomShoot).gold += 500;
+											r3.danger = Room.NONE;
+											r3.gold += 500;
 										}
 									} else	{
 										notify.add("You tried to fire an arrow into an invalid room!");
