@@ -161,7 +161,7 @@ public class CaveServer {
 			try {
 				// the first time a player connects, send a welcome message:
 				ArrayList<String> welcome = new ArrayList<String>();
-				welcome.add("Abandon all hope ye who enter here");
+				welcome.add("Abandon all hope ye who enter here! This is Kyle's cave.");
 				client.sendNotifications(welcome);
 
 				// Put the player in an initial room and send them their initial
@@ -240,6 +240,7 @@ public class CaveServer {
 									case Room.LADDER:
 										r.enterRoom(client);
 										entryMessage.add("HOLY CRAP IS THAT THE LADDER?! YOU'RE GONNA' MAKE IT, BUDDY!");
+										client.sendNotifications(entryMessage);
 										client.sendSenses(r.getSensed());
 										break;
 									}
