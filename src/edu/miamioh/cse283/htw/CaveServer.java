@@ -50,7 +50,7 @@ public class CaveServer {
 			} else if (dangerCheck > 40 && dangerCheck < 50) {
 				danger = Room.HOLE;
 			} else if (dangerCheck > 50 && dangerCheck < 75) {
-				goldToAdd = 500;
+				goldToAdd = 150;
 			}
 			rooms.add(new Room(danger, goldToAdd));
 		}
