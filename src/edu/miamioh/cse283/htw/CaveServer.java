@@ -267,6 +267,7 @@ public class CaveServer {
 										}
 										System.out.println(r1 + " " + r2 + " " + r3);
 										notify.add("You fired an arrow!");
+										notify.add("You now have " + arrows + " left!");
 										if(r.getRoom(roomShoot).danger == Room.WUMPUS)	{
 											r.getRoom(roomShoot).danger = Room.NONE;
 											r.getRoom(roomShoot).gold += 500;
@@ -275,11 +276,11 @@ public class CaveServer {
 										notify.add("You tried to fire an arrow into an invalid room!");
 										notify.add("Your arrow broke on the wall! :(");
 										arrows--;
+										notify.add("You now have " + arrows + " left!");
 									}
 								} else {
 									notify.add("You don't have any arrows, silly!");
 								}
-								notify.add("You now have " + arrows + " left!");
 								client.sendNotifications(notify);
 
 							} else if (line.startsWith(Protocol.PICKUP_ACTION)) {
