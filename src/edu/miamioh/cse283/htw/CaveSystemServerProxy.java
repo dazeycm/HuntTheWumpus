@@ -23,7 +23,7 @@ public class CaveSystemServerProxy {
 	
 	/** Register a cave server. */
 	public void register(ServerSocket s) throws IOException {
-		String msg = Protocol.REGISTER + " " + s.getInetAddress().getHostName() + " " + s.getLocalPort();
+		String msg = Protocol.REGISTER + " " + s.getInetAddress().getLocalHost().getHostAddress() + " " + s.getLocalPort();
 		out.println(msg);
 	}
 }
